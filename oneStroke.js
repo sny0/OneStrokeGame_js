@@ -56,6 +56,7 @@ function move(x, y){
             now = tmp;
             if(judge()){
                 console.log("clear!");
+                txt.textContent = "Clear!";
             }
         }else if(map[tmp[1]][tmp[0]] == 1){
             init();
@@ -112,9 +113,7 @@ const txt = document.getElementById('text');
 //1: start, 0:point not passed, 2:point passed, 3:wall, -1:goal
 const startmap = [
     [1, 0, 0],
-    [0, 3, 0],
-    [0, 3, 0],
-    [0, 3, 0], 
+    [0, 0, 0],
     [0, 0, -1]
 ];
 
