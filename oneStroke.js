@@ -298,10 +298,26 @@ document.addEventListener("keydown", (event) => {
             move(1, 0);
         }else if(event.key === "ArrowLeft" || event.key === "a" || event.key === "A"){
             move(-1, 0);
+        }else if(event.key === "r" || event.key === "R"){
+            init();
+            draw();
         }
         draw();
         console.log(event.key);
         //pirntMap();
+    }else{
+        if(event.key === "Enter" && isStageClear == true){
+            if(stage == stageMapArray.length-1){
+                isAllClaer = true;
+                draw();
+            }else{
+                stage++;
+                st.textContent = "STAGE : "+(stage+1);
+                nb.style.display = "none";
+                init();
+                draw();
+            }
+        }
     }
 });
 
