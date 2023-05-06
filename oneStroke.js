@@ -277,7 +277,7 @@ const goal = [2, 2];
 let boxSize = 50;
 let map;
 let now;
-let stage = 9;
+let stage = 0;
 let track = [];
 let isStageClear = false;
 let isAllClaer = false;
