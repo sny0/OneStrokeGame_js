@@ -9,10 +9,20 @@ function copyArray2d(array2d){
 }
 
 function init(){
-    map = copyArray2d(startmap);
-    now = start.slice();
+    map = copyArray2d(stageMapArray[stage]);
+    now = findStartPosition(stage);
     track = [[-1, -1]];
     track.push(now);
+}
+
+function findStartPosition(n){
+    for(let i=0; i<stageMapArray[n].length; i++){
+        for(let j=0; j<stageMapArray[n][0].length; j++){
+            if(stageMapArray[n][i][j] == 1){
+                return [j, i];
+            }
+        }
+    }
 }
 
 function drawRec(x, y, s){
@@ -44,7 +54,7 @@ function move(x, y){
         tx = track[track.length-2];
 
         if(tx[0] == tmp[0] && tx[1] == tmp[1]){
-            map[pre[1]][pre[0]] = startmap[pre[1]][pre[0]]
+            map[pre[1]][pre[0]] = stageMapArray[stage][pre[1]][pre[0]]
             track.pop();
             now = tmp;
         }else if(map[tmp[1]][tmp[0]] == 0){
@@ -57,12 +67,17 @@ function move(x, y){
             if(judge()){
                 console.log("clear!");
                 txt.textContent = "Clear!";
+                stageClear();
             }
         }else if(map[tmp[1]][tmp[0]] == 1){
             init();
         }
         //console.log("a");
     }
+}
+
+function stageClear(){
+    nb.style.display = "block";
 }
 
 function judge(){
@@ -80,10 +95,10 @@ function judge(){
 }
 
 function pirntMap(){
-    for(let i=0; i<startmap.length; i++){
+    for(let i=0; i<stageMapArray[stage].length; i++){
         let = "";
-        for(let j=0; j<startmap[0].length; j++){
-            let += startmap[i][j] + " ";
+        for(let j=0; j<stageMapArray[stage][0].length; j++){
+            let += stageMapArray[stage][i][j] + " ";
         }
         console.log(let);
     }
@@ -109,24 +124,54 @@ function draw(){
 const canvas = document.getElementById('can');
 const ctx = canvas.getContext('2d');
 const txt = document.getElementById('text');
+const nb = document.getElementById('nextButton');
+const st = document.getElementById('stageText');
 
 //1: start, 0:point not passed, 2:point passed, 3:wall, -1:goal
-const startmap = [
-    [1, 0, 0],
-    [0, 0, 0],
-    [0, 0, -1]
+const stageMapArray = Array(10);
+
+stageMapArray[0] =  [
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 1, 0, 0, 0, 3, 3],
+    [3, 3, 0, 0, 0, 0, 3, 3],
+    [3, 3, 0, 0, 0, -1, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3]
 ];
 
-const start = [0, 0];
+stageMapArray[1] =  [
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 1, 0, 0, 0, 3, 3],
+    [3, 3, 0, 3, 0, 0, 3, 3],
+    [3, 3, 0, 0, 0, -1, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3]
+];
+
+
+const startmap = [
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 1, 0, 0, 0, 3, 3],
+    [3, 3, 0, 0, 0, 0, 3, 3],
+    [3, 3, 0, 0, 0, -1, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3]
+];
+
+const start = [2, 2];
 const goal = [2, 2];
 const s = 50;
 let map;
 let now;
-
+let stage = 0;
 let track = [];
 
 init();
 draw();
+st.textContent = "STAGE : "+stage;
 console.log(map[0].length);
 console.log(map.length);
 pirntMap();
@@ -142,5 +187,14 @@ document.addEventListener("keydown", (event) => {
     }
     draw();
     txt.textContent = now;
+    console.log(now);
     //pirntMap();
 });
+
+nb.onclick = function(){
+    stage++;
+    st.textContent = "STAGE : "+stage;
+    nb.style.display = "none";
+    init();
+    draw();
+}
