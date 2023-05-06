@@ -79,7 +79,6 @@ function move(x, y){
 
 function stageClear(){
     console.log("clear!");
-    txt.textContent = "Clear!";
     isStageClear = true;
     if(stage == stageMapArray.length-1) nb.textContent = "NEXT!!";
     else nb.textContent = "GO TO NEXT STAGE!!";
@@ -112,6 +111,8 @@ function pirntMap(){
 
 function draw(){
     if(isAllClaer){
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, 400, 400);
         ctx.font = '48px serif';
         ctx.fillStyle = "black";
         ctx.fillText('THANK YOU FOR PLAYING!!', 0, 200, 400);
@@ -142,7 +143,6 @@ function draw(){
 
 const canvas = document.getElementById('can');
 const ctx = canvas.getContext('2d');
-const txt = document.getElementById('text');
 const nb = document.getElementById('nextButton');
 const st = document.getElementById('stageText');
 
@@ -280,28 +280,27 @@ let now;
 let stage = 0;
 let track = [];
 let isStageClear = false;
-let isAllClaer = true;
+let isAllClaer = false;
 
 init();
 draw();
-st.textContent = "STAGE : "+stage;
+st.textContent = "STAGE : "+(stage+1);
 console.log(map[0].length);
 console.log(map.length);
 pirntMap();
 document.addEventListener("keydown", (event) => {
     if(!isStageClear){
-        if(event.key === "ArrowUp"){
+        if(event.key === "ArrowUp" || event.key === "w" || event.key === "W"){
             move(0, -1);
-        }else if(event.key === "ArrowDown"){
+        }else if(event.key === "ArrowDown" || event.key === "s" || event.key === "S"){
             move(0, 1);
-        }else if(event.key === "ArrowRight"){
+        }else if(event.key === "ArrowRight" || event.key === "d" || event.key === "D"){
             move(1, 0);
-        }else if(event.key === "ArrowLeft"){
+        }else if(event.key === "ArrowLeft" || event.key === "a" || event.key === "A"){
             move(-1, 0);
         }
         draw();
-        txt.textContent = now;
-        console.log(now);
+        console.log(event.key);
         //pirntMap();
     }
 });
@@ -312,7 +311,7 @@ nb.onclick = function(){
         draw();
     }else{
         stage++;
-        st.textContent = "STAGE : "+stage;
+        st.textContent = "STAGE : "+(stage+1);
         nb.style.display = "none";
         init();
         draw();
