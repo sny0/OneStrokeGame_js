@@ -13,6 +13,9 @@ function init(){
     now = findStartPosition(stage);
     track = [[-1, -1]];
     track.push(now);
+    isStageClear = false;
+    if(stage == 9) boxSize = 20;
+    else boxSize = 50;
 }
 
 function findStartPosition(n){
@@ -65,8 +68,6 @@ function move(x, y){
             track.push(tmp);
             now = tmp;
             if(judge()){
-                console.log("clear!");
-                txt.textContent = "Clear!";
                 stageClear();
             }
         }else if(map[tmp[1]][tmp[0]] == 1){
@@ -77,7 +78,12 @@ function move(x, y){
 }
 
 function stageClear(){
-    nb.style.display = "block";
+    console.log("clear!");
+    txt.textContent = "Clear!";
+    isStageClear = true;
+    if(stage == stageMapArray.length-1) nb.textContent = "NEXT!!";
+    else nb.textContent = "GO TO NEXT STAGE!!";
+    nb.style.display = "inline";
 }
 
 function judge(){
@@ -105,19 +111,32 @@ function pirntMap(){
 }
 
 function draw(){
-    for(let i=0; i<map.length; i++){
-        for(let j=0; j<map[0].length; j++){
-            drawRec(j, i, s);
+    if(isAllClaer){
+        ctx.font = '48px serif';
+        ctx.fillStyle = "black";
+        ctx.fillText('THANK YOU FOR PLAYING!!', 0, 200, 400);
+        ctx.font = '26px serif';
+        ctx.fillText('CREATED BY sny', 100, 350);
+    }else{
+        for(let i=0; i<map.length; i++){
+            for(let j=0; j<map[0].length; j++){
+                drawRec(j, i, boxSize);
+            }
         }
-    }
-    
-    ctx.strokeStyle = "blue";
-    for(let i=2; i<track.length; i++){
-        ctx.beginPath();
-        ctx.moveTo(track[i-1][0]*s+s/2, track[i-1][1]*s+s/2);
-        ctx.lineTo(track[i][0]*s+s/2, track[i][1]*s+s/2);
-        ctx.closePath();
-        ctx.stroke();
+        
+        ctx.strokeStyle = "blue";
+        for(let i=2; i<track.length; i++){
+            ctx.beginPath();
+            ctx.moveTo(track[i-1][0]*boxSize+boxSize/2, track[i-1][1]*boxSize+boxSize/2);
+            ctx.lineTo(track[i][0]*boxSize+boxSize/2, track[i][1]*boxSize+boxSize/2);
+            ctx.closePath();
+            ctx.stroke();
+        }
+        if(isStageClear){
+            ctx.font = '48px serif';
+            ctx.fillStyle = "black";
+            ctx.fillText('STAGE CLEAR!!', 10, 220);
+        }
     }
 }
 
@@ -133,9 +152,10 @@ const stageMapArray = Array(10);
 stageMapArray[0] =  [
     [3, 3, 3, 3, 3, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 1, 0, 0, 0, 3, 3],
-    [3, 3, 0, 0, 0, 0, 3, 3],
-    [3, 3, 0, 0, 0, -1, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 1, 0, 0, -1, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 3, 3]
 ];
@@ -143,31 +163,124 @@ stageMapArray[0] =  [
 stageMapArray[1] =  [
     [3, 3, 3, 3, 3, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 1, 0, 0, 3, 3],
+    [3, 3, 3, 0, 0, 0, 3, 3],
+    [3, 3, 3, 0, 0, -1, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3]
+];
+
+
+stageMapArray[2] =  [
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3],
     [3, 3, 1, 0, 0, 0, 3, 3],
+    [3, 3, 0, 0, 0, 0, 3, 3],
     [3, 3, 0, 3, 0, 0, 3, 3],
     [3, 3, 0, 0, 0, -1, 3, 3],
     [3, 3, 3, 3, 3, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 3, 3]
 ];
 
-
-const startmap = [
+stageMapArray[3] =  [
     [3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 1, 0, 0, 0, 3, 3],
-    [3, 3, 0, 0, 0, 0, 3, 3],
-    [3, 3, 0, 0, 0, -1, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 1, -1, 0, 0, 0, 0, 3],
+    [3, 0, 0, 0, 0, 0, 0, 3],
+    [3, 0, 0, 0, 0, 0, 0, 3],
+    [3, 0, 0, 3, 0, 0, 3, 3],
+    [3, 0, 0, 0, 0, 0, 0, 3],
+    [3, 0, 0, 0, 0, 0, 0, 3],
     [3, 3, 3, 3, 3, 3, 3, 3]
+];
+
+stageMapArray[4] =  [
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 1, 0, 0, 0, 0, 0, 3],
+    [3, 3, 0, 0, 3, 0, 0, 3],
+    [3, 3, 0, 0, -1, 0, 3, 3],
+    [3, 0, 0, 0, 0, 0, 0, 3],
+    [3, 0, 0, 0, 0, 3, 0, 3],
+    [3, 0, 0, 3, 0, 0, 0, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3]
+];
+
+stageMapArray[5] =  [
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 0, 0, 0, 0, 0, 3],
+    [3, 0, 0, 0, 0, 0, 0, 3],
+    [3, 0, 3, 0, 1, 0, 0, 3],
+    [3, 0, 0, 0, 0, 0, 0, 3],
+    [3, 3, 0, 0, 0, 0, 0, 3],
+    [3, 3, 0, 0, -1, 0, 0, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3]
+];
+
+stageMapArray[6] =  [
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 0, 0, 0, 0, 0, 0, 3],
+    [3, 0, 3, 0, 0, 3, 0, 3],
+    [3, -1, 0, 0, 0, 0, 1, 3],
+    [3, 0, 0, 0, 0, 0, 0, 3],
+    [3, 0, 3, 0, 0, 3, 0, 3],
+    [3, 0, 0, 0, 0, 0, 0, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3]
+];
+
+stageMapArray[7] =  [
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 0, 0, 1, -1, 0, 0, 3],
+    [3, 0, 0, 0, 0, 0, 0, 3],
+    [3, 0, 0, 0, 0, 0, 0, 3],
+    [3, 0, 0, 0, 3, 0, 0, 3],
+    [3, 0, 0, 0, 0, 0, 3, 3],
+    [3, 0, 0, 0, 0, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3]
+];
+
+stageMapArray[8] =  [
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 0, 0, 3, 0, 0, 3],
+    [3, 0, 0, 0, 0, 0, 0, 3],
+    [3, 0, 0, 0, 0, 0, 0, 3],
+    [3, -1, 0, 0, 0, 0, 0, 3],
+    [3, 3, 0, 0, 0, 0, 0, 3],
+    [3, 1, 0, 0, 0, 0, 0, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3]
+];
+
+stageMapArray[9] =  [
+    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    [0, 0, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    [0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    [0, 3, 3, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 3],
+    [0, 3, 3, 3, 0, 3, 3, 0, 3, 0, 3, 3, 0, 3, 0, 3, 3, 0, 3, 3],
+    [0, 3, 3, 3, 0, 3, 3, 0, 3, 0, 3, 3, 0, 3, 0, 3, 3, 0, 3, 3],
+    [0, 3, 3, 3, 0, 3, 3, 0, 3, 0, 3, 3, 0, 3, 0, 3, 3, 0, 3, 3],
+    [0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 3, 3, 0, 0, 0, 0, 0, 0, 3, 3],
+    [3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 0, 0, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 3, 0, 3, 3, 3],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 3, 0, 3, 3, 3],
+    [0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 3, 0, 0],
+    [0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0],
+    [0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 3, 3, 3, 3, 3, 3, 0, 0, 0],
+    [0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0],
+    [0, 3, 0, 3, 3, 0, 0, 0, 3, 3, 0, 0, 0, 3, 0, 3, 3, 3, 0, 0],
+    [0, 3, 0, 3, 3, 0, 0, 3, 3, 3, 0, 3, 3, 3, 0, 0, 0, 3, 0, 0],
+    [0, 3, 0, 0, 0, 0, 0, 3, 3, 3, 0, 3, 3, 3, 3, 3, 0, 3, 3, 0],
+    [0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 3, -1, 0],
+    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
 ];
 
 const start = [2, 2];
 const goal = [2, 2];
-const s = 50;
+let boxSize = 50;
 let map;
 let now;
 let stage = 0;
 let track = [];
+let isStageClear = false;
+let isAllClaer = true;
 
 init();
 draw();
@@ -176,25 +289,32 @@ console.log(map[0].length);
 console.log(map.length);
 pirntMap();
 document.addEventListener("keydown", (event) => {
-    if(event.key === "ArrowUp"){
-        move(0, -1);
-    }else if(event.key === "ArrowDown"){
-        move(0, 1);
-    }else if(event.key === "ArrowRight"){
-        move(1, 0);
-    }else if(event.key === "ArrowLeft"){
-        move(-1, 0);
+    if(!isStageClear){
+        if(event.key === "ArrowUp"){
+            move(0, -1);
+        }else if(event.key === "ArrowDown"){
+            move(0, 1);
+        }else if(event.key === "ArrowRight"){
+            move(1, 0);
+        }else if(event.key === "ArrowLeft"){
+            move(-1, 0);
+        }
+        draw();
+        txt.textContent = now;
+        console.log(now);
+        //pirntMap();
     }
-    draw();
-    txt.textContent = now;
-    console.log(now);
-    //pirntMap();
 });
 
 nb.onclick = function(){
-    stage++;
-    st.textContent = "STAGE : "+stage;
-    nb.style.display = "none";
-    init();
-    draw();
+    if(stage == stageMapArray.length-1){
+        isAllClaer = true;
+        draw();
+    }else{
+        stage++;
+        st.textContent = "STAGE : "+stage;
+        nb.style.display = "none";
+        init();
+        draw();
+    }
 }

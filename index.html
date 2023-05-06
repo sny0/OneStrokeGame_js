@@ -7,11 +7,16 @@
 	</head>
 	<body>
 		<div class="wrapper">
-			<canvas id="can" width="500" height="500"></canvas>
+			<div>
+				<p>一筆書きゲーム</p>
+				<p id="stageText">stage</p>
+				<canvas id="can" width="400" height="400"></canvas>
+			</div>
+			<div class="buttons">
+				<button id="nextButton" style="display: none;">GO TO NEXT STAGE</button>
+			</div>
 		</div>
         <p id="text"></p>
-		<p id="stageText">stage</p>
-		<button id="nextButton" style="display: none;">GO TO NEXT STAGE</button>
 		<script src="oneStroke.js"></script>
 	</body>
 </html>
