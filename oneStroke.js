@@ -277,7 +277,7 @@ const goal = [2, 2];
 let boxSize = 50;
 let map;
 let now;
-let stage = 0;
+let stage = 9;
 let track = [];
 let isStageClear = false;
 let isAllClaer = false;
@@ -309,6 +309,7 @@ document.addEventListener("keydown", (event) => {
         if(event.key === "Enter" && isStageClear == true){
             if(stage == stageMapArray.length-1){
                 isAllClaer = true;
+                nb.style.display = "none";
                 draw();
             }else{
                 stage++;
@@ -324,6 +325,7 @@ document.addEventListener("keydown", (event) => {
 nb.onclick = function(){
     if(stage == stageMapArray.length-1){
         isAllClaer = true;
+        nb.style.display = "none";
         draw();
     }else{
         stage++;
